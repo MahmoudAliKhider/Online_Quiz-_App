@@ -16,7 +16,9 @@ button {
     border-radius: 2px;
     height: 40px !important;
 }
-
+.col{
+    color: #dedde9;
+}
 .primary-contained-btn {
     background-color: var(--primary);
     color: white;
