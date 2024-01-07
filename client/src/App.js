@@ -1,7 +1,11 @@
+import "./styleSheets/alignments.css";
+import "./styleSheets/textElements.css";
+import "./styleSheets/theme.css";
+
 function App() {
   return (
     <div className="App">
-      <h1>Ahhhaaaa</h1>
+       <div className='h-screen bg-primary'></div>
     </div>
   );
 }
