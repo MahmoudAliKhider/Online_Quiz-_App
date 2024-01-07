@@ -1,12 +1,22 @@
+import Login from "./pages/common/Login/Login";
+import Register from "./pages/common/Register/Register";
+
 import "./styleSheets/alignments.css";
 import "./styleSheets/textElements.css";
 import "./styleSheets/theme.css";
+import "./styleSheets/custom-components.css";
+import "./styleSheets/form-elements.css";
+
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 function App() {
   return (
-    <div className="App">
-       <div className='h-screen bg-primary'></div>
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+      </Routes>
+    </BrowserRouter>
   );
 }
 
