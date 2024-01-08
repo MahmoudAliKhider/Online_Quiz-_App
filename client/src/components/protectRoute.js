@@ -109,8 +109,21 @@ const ProtectRoute = ({ children }) => {
     },
   ];
 
-  const atchiveRoute = window.location.pathname;
+  const activeRoute = window.location.pathname;
 
+  const getIsActiveOrNot = (paths) => {
+    if (paths.includes(activeRoute)) {
+      return true;
+    } else {
+      if (
+        activeRoute.includes("/admin/exams/edit") &&
+        paths.includes("/admin/exams")
+      ) {
+        return true;
+      }
+    }
+    return false;
+  };
   return (
     <div className='layout'>
       <div className='flex gap-2 w-full h-full h-100'>
@@ -119,7 +132,8 @@ const ProtectRoute = ({ children }) => {
             {
               menu.map((item, index) => {
                 return <div className=
-                  {`menu-item ${atchiveRoute === item.paths[0] && "active-menu-item"}`}
+                  {`menu-item ${getIsActiveOrNot(item.paths) && "active-menu-item"
+                    }`}
                   key={index}
                   onClick={item.onClick}
                 >

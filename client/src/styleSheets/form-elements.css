@@ -30,4 +30,5 @@ button {
     background-color: white;
     color: var(--primary);
     border: 2px solid var(--primary);
+    border-radius: 5px;
 }

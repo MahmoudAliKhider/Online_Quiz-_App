@@ -7,23 +7,50 @@ import "./styleSheets/custom-components.css";
 import "./styleSheets/form-elements.css";
 import "./styleSheets/layout.css";
 
+import ProtectRoute from "./components/protectRoute";
+
 import Login from "./pages/common/Login/Login";
 import Register from "./pages/common/Register/Register";
 import Home from "./pages/common/Home/Home";
 
-import ProtectRoute from "./components/protectRoute";
+import Exams from "./pages/admin/Exams/exams";
+import AddEditExam from "./pages/admin/Exams/AddEditExam";
 
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        {/* common Route */}
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+
+        {/* user Route */}
         <Route path="/" element={
-        <ProtectRoute>
-          <Home />
-        </ProtectRoute>} />
+          <ProtectRoute>
+            <Home />
+          </ProtectRoute>}
+        />
+
+        {/* admin route */}
+        <Route path="/admin/exams" element={
+          <ProtectRoute>
+            <Exams />
+          </ProtectRoute>}
+        />
+
+        <Route path="/admin/exams/add" element={
+          <ProtectRoute>
+            <AddEditExam />
+          </ProtectRoute>}
+        />
+
+        <Route path="/admin/exams/edit/:id" element={
+          <ProtectRoute>
+            <AddEditExam />
+          </ProtectRoute>}
+        />
+        
       </Routes>
     </BrowserRouter>
   );
