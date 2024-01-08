@@ -8,6 +8,8 @@ import "./styleSheets/custom-components.css";
 import "./styleSheets/form-elements.css";
 
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import ProtectRoute from "./components/protectRoute";
+import Home from "./pages/common/Home/Home";
 
 function App() {
   return (
@@ -15,6 +17,10 @@ function App() {
       <Routes>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
+        <Route path="/" element={
+        <ProtectRoute>
+          <Home />
+        </ProtectRoute>} />
       </Routes>
     </BrowserRouter>
   );
