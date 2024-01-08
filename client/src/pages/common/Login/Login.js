@@ -4,9 +4,9 @@ import { Link } from 'react-router-dom';
 
 const Login = () => {
     const onFinish = (value) => {
-        console.log(value);
+      console.log(value);
     }
-    
+
     return (
         <div className='flex justify-center items-center h-screen w-screen'>
             <div className='card w-400 p-4'>
