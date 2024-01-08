@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { registerUser } from '../../../apiCalls/users';
 
 const Register = () => {
-  const onFinish = async(values) => {
+  const onFinish = async (values) => {
     try {
       const response = await registerUser(values);
       if (response.success) {
