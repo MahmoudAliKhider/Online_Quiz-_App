@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const User = require('../models/useModule');
+const authmiddleware = require('../middlewares/authMiddleware');
 
 router.post("/register", async (req, res) => {
     try {
@@ -71,6 +72,24 @@ router.post('/login', async (req, res) => {
             data: error,
             success: false,
         });
+    }
+})
+
+router.post('/get-user-info', authmiddleware, async (req, res) => {
+    try {
+        const user = await User.findById(req.body.userId);
+
+        res.status(200).send({
+            message: "User info fetched successfully",
+            success: true,
+            data: user,
+        })
+    } catch (error) {
+        res.status(500).send({
+            message: error.message,
+            data: error,
+            success: false,
+        })
     }
 })
 
