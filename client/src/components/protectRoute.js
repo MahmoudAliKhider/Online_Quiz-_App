@@ -36,30 +36,34 @@ const ProtectRoute = ({ children }) => {
   }
 
   useEffect(() => {
-    getUserData();
+    if (localStorage.getItem("token")) {
+      getUserData();
+    } else {
+      navigate("/login");
+    }
   }, []);
 
   const userMenu = [
     {
-      name: "Home",
+      title: "Home",
       paths: ["/"],
       icon: <i className="ri-home-4-line"></i>,
       onclick: () => navigate("/")
     },
     {
-      name: "Reports",
+      title: "Reports",
       paths: ["/reports"],
-      icon: <i className="ri-file-chart-line"></i>,
+      icon: <i className="ri-bar-chart-line"></i>,
       onClick: () => navigate("/reports")
     },
     {
-      name: "Profile",
+      title: "Profile",
       paths: ["/profile"],
-      icon: <i className="ri-file-user-line"></i>,
+      icon: <i className="ri-user-line"></i>,
       onClick: () => navigate("/profile")
     },
     {
-      name: "LogOut",
+      title: "LogOut",
       paths: ["/logout"],
       icon: <i className="ri-logout-circle-r-line"></i>,
       onClick: () => {
@@ -69,7 +73,41 @@ const ProtectRoute = ({ children }) => {
     }
   ];
 
-  const adminMenu = [];
+  const adminMenu = [
+    {
+      title: "Home",
+      paths: ["/", "/user/write-exam"],
+      icon: <i className="ri-home-4-line"></i>,
+      onClick: () => navigate("/"),
+    },
+    {
+      title: "Exams",
+      paths: ["/admin/exams", "/admin/exams/add"],
+      icon: <i className="ri-file-list-line"></i>,
+      onClick: () => navigate("/admin/exams"),
+    },
+    {
+      title: "Reports",
+      paths: ["/admin/reports"],
+      icon: <i className="ri-bar-chart-line"></i>,
+      onClick: () => navigate("/admin/reports"),
+    },
+    {
+      title: "Profile",
+      paths: ["/profile"],
+      icon: <i className="ri-user-line"></i>,
+      onClick: () => navigate("/profile"),
+    },
+    {
+      title: "Logout",
+      paths: ["/logout"],
+      icon: <i className="ri-logout-circle-r-line"></i>,
+      onClick: () => {
+        localStorage.removeItem("token");
+        navigate("/login");
+      },
+    },
+  ];
 
   const atchiveRoute = window.location.pathname;
 
@@ -86,7 +124,7 @@ const ProtectRoute = ({ children }) => {
                   onClick={item.onClick}
                 >
                   {item.icon}
-                  {!collapsed && <span>{item.name}</span>}
+                  {!collapsed && <span>{item.title}</span>}
                 </div>
               })
             }
