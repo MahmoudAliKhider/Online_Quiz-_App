@@ -9,9 +9,11 @@ import { setUser } from "../redux/userSlice";
 const ProtectRoute = ({ children }) => {
   const { user } = useSelector((state) => state.users);
   const [menu, setMenu] = useState([]);
+  const [collapsed, setCollapsed] = useState(false);
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const getUserData = async () => {
     try {
       const response = await getUserInfo();
@@ -36,7 +38,6 @@ const ProtectRoute = ({ children }) => {
   useEffect(() => {
     getUserData();
   }, []);
-
 
   const userMenu = [
     {
@@ -85,7 +86,7 @@ const ProtectRoute = ({ children }) => {
                   onClick={item.onClick}
                 >
                   {item.icon}
-                  <span>{item.name}</span>
+                  {!collapsed && <span>{item.name}</span>}
                 </div>
               })
             }
@@ -93,7 +94,17 @@ const ProtectRoute = ({ children }) => {
         </div>
         <div className='body'>
           <div className='header flex justify-between'>
-            <i className="ri-close-circle-line"></i>
+
+            {!collapsed && <i className="ri-close-circle-line"
+              onClick={() => setCollapsed(true)}>
+            </i>
+            }
+
+            {collapsed && <i className="ri-close-circle-line"
+              onClick={() => setCollapsed(false)}>
+            </i>
+            }
+
             <h1 className='text-2xl '>Master Quiz</h1>
             <div>
               <div className="flex gap-1 items-center">
