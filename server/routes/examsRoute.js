@@ -2,6 +2,8 @@ const router = require('express').Router();
 
 const authMiddleware = require("../middlewares/authMiddleware.js");
 const Exam = require('../models/examModule.js');
+const Exam = require('../models/examModule.js');
+const Question = require('../models/questionModule.js');
 
 router.post('/add', authMiddleware, async (req, res) => {
     try {
@@ -83,7 +85,7 @@ router.put('/edit-exam-by-id/:examId', authMiddleware, async (req, res) => {
             success: false,
         });
     }
-})
+});
 
 router.delete('/delete-exam-by-id/:examId', authMiddleware, async (req, res) => {
     try {
@@ -99,5 +101,45 @@ router.delete('/delete-exam-by-id/:examId', authMiddleware, async (req, res) => 
             success: false,
         });
     }
+});
+
+router.post('/add-question-to-exam', authMiddleware, async (req, res) => {
+    try {
+        const newQuestion = new Question(req.body);
+        const question = await newQuestion.save();
+
+        const exam = await Exam.findById(req.body.exam);
+        exam.questions.push(question._id);
+
+        await exam.save();
+        res.send({
+            message: "Question added successfully",
+            success: true,
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: error.message,
+            data: error,
+            success: false,
+        });
+    }
 })
+
+router.put("/edit-question-in-exam/:questionId", authMiddleware, async (req, res) => {
+    try {
+        await Question.findByIdAndUpdate(req.params.questionId, req.body);
+        res.send({
+            message: "Question edited successfully",
+            success: true,
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: error.message,
+            data: error,
+            success: false,
+        });
+
+    }
+})
+
 module.exports = router;
