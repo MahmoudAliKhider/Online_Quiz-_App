@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Form, Row, Col, Select, message, Tabs } from "antd";
+import { Form, Row, Col, Select, message, Tabs, Table } from "antd";
 
 import PageTitle from '../../../components/PageTitle';
 import { addExam, getExamById, updateExamById } from '../../../apiCalls/exams';
@@ -68,6 +68,38 @@ const AddEditExam = () => {
     }
   }, []);
 
+  const QuestionOptions = [
+    {
+      title: "Question",
+      dataIndex: "name"
+    },
+    {
+      title:"Options",
+      dataIndex:"options",
+      render: (text,record)=>{
+        return Object.keys(record.options).map((key)=>{
+          return <div>{key} : {record.options[key]}</div>
+        })
+      }
+    },
+    {
+      title: "Correct Answer",
+      dataIndex: "correctanswer",
+      render: (text, record) => {
+        return `${record.correctanswer} : ${record.options[record.correctanswer]}`;
+      }
+    },
+    {
+      title: "Action",
+      dataIndex: "action",
+      render: (text, record) => (
+        <div className="flex gap-2">
+          <i className="ri-pencil-line" onClick={() => { }}></i>
+          <i className="ri-delete-bin-line" onClick={() => { }}></i>
+        </div>
+      )
+    }
+  ]
   return (
     <div>
       <PageTitle title={params.id ? 'Exam Edit' : "Exam Add"} />
@@ -77,6 +109,7 @@ const AddEditExam = () => {
         (examData || !params.id) && <Form layout='vertical' className='mt-2 p-1 ' onFinish={onFinish} initialValues={examData}>
 
           <Tabs defaultActiveKey='1'>
+
             <TabPane tab='Exam Details' key='1'>
 
               <Row gutter={[20, 20]}>
@@ -117,7 +150,16 @@ const AddEditExam = () => {
                   </Form.Item>
                 </Col>
               </Row>
+              <div className='flex justify-end gap-2' >
+                <button type="submit" className='primary-outlined-btn'
+                  onClick={() => navigate('/admin/exams')}
+                >Cancel</button>
+                <button type="submit" className='primary-contained-btn'>Save</button>
+              </div>
+
             </TabPane>
+
+            {/* //////////////////////////////// */}
 
             {params.id &&
               (<TabPane tab="Questions" key='2'>
@@ -127,27 +169,27 @@ const AddEditExam = () => {
                     onClick={() => setShowAddEditQuestionModel(true)}
                   >Add Questios</button>
                 </div>
+
+                <Table
+                  columns={QuestionOptions}
+                  dataSource={examData?.questions}
+                />
               </TabPane>
               )}
 
           </Tabs>
-           <br />
-          <div className='flex justify-end gap-2' >
-            <button type="submit" className='primary-outlined-btn'
-              onClick={() => navigate('/admin/exams')}
-            >Cancel</button>
-            <button type="submit" className='primary-contained-btn'>Save</button>
-          </div>
+          <br />
+
         </Form>
       }
 
       {showAddEditQuestionModel && (
-      <AddEditQuestion
-        setShowAddEditQuestionModel={setShowAddEditQuestionModel}
-        showAddEditQuestionModel={showAddEditQuestionModel}
-        examId={params.id}
-        refreshData={getExamData}
-      />
+        <AddEditQuestion
+          setShowAddEditQuestionModel={setShowAddEditQuestionModel}
+          showAddEditQuestionModel={showAddEditQuestionModel}
+          examId={params.id}
+          refreshData={getExamData}
+        />
       )}
     </div>
   )
