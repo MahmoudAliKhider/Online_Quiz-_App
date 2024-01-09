@@ -18,9 +18,9 @@ export const getAllExams = async () => {
   }
 };
 
-export const getExamById = async (payload) => {
+export const getExamById = async (examId) => {
   try {
-    const response = await axiosInstance.get("/api/exams/get-exam-by-id", payload);
+    const response = await axiosInstance.get(`/api/exams/get-exam-by-id/${examId}`);
     return response.data;
   } catch (error) {
     return error.response.data;

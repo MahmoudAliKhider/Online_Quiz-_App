@@ -1,15 +1,19 @@
-import React from 'react';
-import { Form, Row, Col, Select, message } from "antd";
+import React, { useEffect, useState } from 'react';
+import { Form, Row, Col, Select, message, Tabs } from "antd";
 
 import PageTitle from '../../../components/PageTitle';
-import { addExam } from '../../../apiCalls/exams';
-import { useNavigate } from 'react-router-dom';
+import { addExam, getExamById } from '../../../apiCalls/exams';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { HideLoading, ShowLoading } from '../../../redux/loaderSlice';
+import TabPane from 'antd/es/tabs/TabPane';
 
 const AddEditExam = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const params = useParams();
+
+  const [examData, setExamData] = useState(null);
 
   const onFinish = async (value) => {
     try {
@@ -28,56 +32,91 @@ const AddEditExam = () => {
     }
   }
 
+  const getExamsData = async () => {
+    try {
+      dispatch(ShowLoading());
+      const response = await getExamById(
+        params.id
+      );
+      dispatch(HideLoading());
+      if (response.success) {
+        setExamData(response.data);
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      dispatch(HideLoading());
+      message.error(error.message);
+    }
+  };
+
+  useEffect(() => {
+    if (params.id) {
+      getExamsData()
+    }
+  }, [])
   return (
     <div>
-      <PageTitle title="Add Exams" />
+      <PageTitle title={params.id ? 'Exam Edit' : "Exam Add"} />
       <div className='divider'></div>
 
-      <Form layout='vertical' className='mt-2 p-1 ' onFinish={onFinish}>
+      {
+        (examData || !params.id) && <Form layout='vertical' className='mt-2 p-1 ' onFinish={onFinish} initialValues={examData}>
 
-        <Row gutter={[20, 20]}>
-          <Col span={8} >
-            <Form.Item label="Exam Name" name="name">
-              <input type="text" />
-            </Form.Item>
-          </Col>
+          <Tabs defaultActiveKey='1'>
+            <TabPane tab='Exam Details' key='1'>
 
-          <Col span={8} >
-            <Form.Item label="Exam Duration" name="duration">
-              <input type="number" />
-            </Form.Item>
-          </Col>
+              <Row gutter={[20, 20]}>
+                <Col span={8} >
+                  <Form.Item label="Exam Name" name="name">
+                    <input type="text" />
+                  </Form.Item>
+                </Col>
 
-          <Col span={8} >
-            <Form.Item label="Category" name="category">
-              <Select>
+                <Col span={8} >
+                  <Form.Item label="Exam Duration" name="duration">
+                    <input type="number" />
+                  </Form.Item>
+                </Col>
 
-                <Select.Option value="javascript">JavaScript</Select.Option>
-                <Select.Option value="nodejs">nodeJs</Select.Option>
-                <Select.Option value="react">React</Select.Option>
-                <Select.Option value="mongodb">MongoDB</Select.Option>
+                <Col span={8} >
+                  <Form.Item label="Category" name="category">
+                    <Select>
 
-              </Select>
-            </Form.Item>
-          </Col>
+                      <Select.Option value="javascript">JavaScript</Select.Option>
+                      <Select.Option value="nodejs">nodeJs</Select.Option>
+                      <Select.Option value="react">React</Select.Option>
+                      <Select.Option value="mongodb">MongoDB</Select.Option>
 
-          <Col span={8} >
-            <Form.Item label="Total Mark" name="totalMarks">
-              <input type="number" />
-            </Form.Item>
-          </Col>
+                    </Select>
+                  </Form.Item>
+                </Col>
 
-          <Col span={8} >
-            <Form.Item label="Passing Marks" name="passingMarks">
-              <input type="number" />
-            </Form.Item>
-          </Col>
-        </Row>
+                <Col span={8} >
+                  <Form.Item label="Total Mark" name="totalMarks">
+                    <input type="number" />
+                  </Form.Item>
+                </Col>
 
-        <div className='flex justify-end' >
-          <button type="submit" className='primary-contained-btn'>Save</button>
-        </div>
-      </Form>
+                <Col span={8} >
+                  <Form.Item label="Passing Marks" name="passingMarks">
+                    <input type="number" />
+                  </Form.Item>
+                </Col>
+              </Row>
+            </TabPane>
+
+            {params.id && <TabPane tab="Exam Question" key='2'>
+              <h1>Questions</h1>
+            </TabPane>}
+
+          </Tabs>
+
+          <div className='flex justify-end' >
+            <button type="submit" className='primary-contained-btn'>Save</button>
+          </div>
+        </Form>
+      }
     </div>
   )
 }

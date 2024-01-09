@@ -47,6 +47,7 @@ const Exams = () => {
 
     const dispatch = useDispatch();
     const navigate = useNavigate();
+
     const [exams, setExams] = useState([]);
 
     const getExamsData = async () => {
@@ -64,6 +65,8 @@ const Exams = () => {
             message.error(error.message);
         }
     };
+
+    
 
     useEffect(() => {
         getExamsData();

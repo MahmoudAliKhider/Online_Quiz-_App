@@ -2,7 +2,7 @@ import React from 'react'
 
 const PageTitle = ({title}) => {
   return (
-    <div className='text-2xl p-1 colorT'>{title}</div>
+    <div className='text-xl p-1 colorT'><h1>{title}</h1></div>
   )
 }
 
