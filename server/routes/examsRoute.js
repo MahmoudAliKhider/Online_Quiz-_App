@@ -30,4 +30,38 @@ router.post('/add', authMiddleware, async (req, res) => {
     }
 })
 
+router.get("/get-all-exams", authMiddleware, async (req, res) => {
+    try {
+        const exams = await Exam.find({});
+        res.send({
+            message: "Exams fetched successfully",
+            data: exams,
+            success: true,
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: error.message,
+            data: error,
+            success: false,
+        });
+    }
+});
+
+router.get("/get-exam-by-id", authMiddleware, async (req, res) => {
+    try {
+        const exam = await Exam.findById(req.body.examId);
+        res.send({
+            message: "Exam fetched successfully",
+            data: exam,
+            success: true,
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: error.message,
+            data: error,
+            success: false,
+        });
+    }
+});
+
 module.exports = router;
