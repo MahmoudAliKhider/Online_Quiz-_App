@@ -16,7 +16,10 @@ const Exams = () => {
                     <i className='ri-add-line'></i>
                     Add Exams
                 </button>
+
+
             </div>
+            <div className='divider'></div>
         </div>
     )
 }

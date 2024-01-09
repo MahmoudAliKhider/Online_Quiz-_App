@@ -1,16 +1,31 @@
 import React from 'react';
-import { Form, Row, Col, Select } from "antd";
+import { Form, Row, Col, Select, message } from "antd";
 
 import PageTitle from '../../../components/PageTitle';
+import { addExam } from '../../../apiCalls/exams';
+import { useNavigate } from 'react-router-dom';
 
 const AddEditExam = () => {
+  const navigate = useNavigate();
 
-  const onFinish = (value) => {
-    console.log(value);
+  const onFinish = async (value) => {
+    try {
+      let response = await addExam(value);
+      if (response.success) {
+        message.success(response.message);
+        navigate('/admin/exams')
+      } else {
+        message.error(response.message);
+      }
+    } catch (error) {
+      message.error(error.message)
+    }
   }
+
   return (
     <div>
       <PageTitle title="Add Exams" />
+      <div className='divider'></div>
 
       <Form layout='vertical' className='mt-2 p-1 ' onFinish={onFinish}>
 
@@ -41,7 +56,7 @@ const AddEditExam = () => {
           </Col>
 
           <Col span={8} >
-            <Form.Item label="Total Mark" name="totalMark">
+            <Form.Item label="Total Mark" name="totalMarks">
               <input type="number" />
             </Form.Item>
           </Col>
