@@ -4,13 +4,18 @@ import { Form, Row, Col, Select, message } from "antd";
 import PageTitle from '../../../components/PageTitle';
 import { addExam } from '../../../apiCalls/exams';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { HideLoading, ShowLoading } from '../../../redux/loaderSlice';
 
 const AddEditExam = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const onFinish = async (value) => {
     try {
+      dispatch(ShowLoading());
       let response = await addExam(value);
+      dispatch(HideLoading());
       if (response.success) {
         message.success(response.message);
         navigate('/admin/exams')
@@ -18,6 +23,7 @@ const AddEditExam = () => {
         message.error(response.message);
       }
     } catch (error) {
+      dispatch(HideLoading());
       message.error(error.message)
     }
   }

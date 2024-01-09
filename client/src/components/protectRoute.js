@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom';
 
 import { getUserInfo } from '../apiCalls/users'
 import { setUser } from "../redux/userSlice";
+import { HideLoading, ShowLoading } from '../redux/loaderSlice';
 
 const ProtectRoute = ({ children }) => {
   const { user } = useSelector((state) => state.users);
@@ -16,8 +17,9 @@ const ProtectRoute = ({ children }) => {
 
   const getUserData = async () => {
     try {
+      dispatch(ShowLoading());
       const response = await getUserInfo();
-
+      dispatch(HideLoading());
       if (response.success) {
         // message.success(response.message);
         dispatch(setUser(response.data));
@@ -27,6 +29,7 @@ const ProtectRoute = ({ children }) => {
           setMenu(userMenu);
         }
       } else {
+        dispatch(HideLoading());
         message.error(response.message);
       }
     } catch (error) {

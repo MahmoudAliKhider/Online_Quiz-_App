@@ -2,17 +2,22 @@ import React from 'react';
 import { Form, message } from 'antd';
 import { Link } from 'react-router-dom';
 import { LoginUser } from '../../../apiCalls/users';
-
+import { useDispatch } from 'react-redux';
+import { HideLoading, ShowLoading } from '../../../redux/loaderSlice';
 const Login = () => {
+    const dispatch = useDispatch();
     const onFinish = async (value) => {
         try {
+            dispatch(ShowLoading())
             const response = await LoginUser(value);
+            dispatch(HideLoading())
             if (response.success) {
                 message.success(response.message)
                 localStorage.setItem("token", response.data);
                 window.location.href = '/';
 
             } else {
+                dispatch(HideLoading())
                 message.error(response.message)
             }
         } catch (error) {

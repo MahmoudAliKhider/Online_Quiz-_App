@@ -15,44 +15,52 @@ import Home from "./pages/common/Home/Home";
 
 import Exams from "./pages/admin/Exams/exams";
 import AddEditExam from "./pages/admin/Exams/AddEditExam";
+import Loader from "./components/Loader";
+import { useSelector } from "react-redux";
 
 
 function App() {
+  const { loading } = useSelector(state => state.loader);
+
   return (
-    <BrowserRouter>
-      <Routes>
-        {/* common Route */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
+    <>
+      {loading && <Loader />}
 
-        {/* user Route */}
-        <Route path="/" element={
-          <ProtectRoute>
-            <Home />
-          </ProtectRoute>}
-        />
+      <BrowserRouter>
+        <Routes>
+          {/* common Route */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
 
-        {/* admin route */}
-        <Route path="/admin/exams" element={
-          <ProtectRoute>
-            <Exams />
-          </ProtectRoute>}
-        />
+          {/* user Route */}
+          <Route path="/" element={
+            <ProtectRoute>
+              <Home />
+            </ProtectRoute>}
+          />
 
-        <Route path="/admin/exams/add" element={
-          <ProtectRoute>
-            <AddEditExam />
-          </ProtectRoute>}
-        />
+          {/* admin route */}
+          <Route path="/admin/exams" element={
+            <ProtectRoute>
+              <Exams />
+            </ProtectRoute>}
+          />
 
-        <Route path="/admin/exams/edit/:id" element={
-          <ProtectRoute>
-            <AddEditExam />
-          </ProtectRoute>}
-        />
-        
-      </Routes>
-    </BrowserRouter>
+          <Route path="/admin/exams/add" element={
+            <ProtectRoute>
+              <AddEditExam />
+            </ProtectRoute>}
+          />
+
+          <Route path="/admin/exams/edit/:id" element={
+            <ProtectRoute>
+              <AddEditExam />
+            </ProtectRoute>}
+          />
+
+        </Routes>
+      </BrowserRouter>
+    </>
   );
 }
 
