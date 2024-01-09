@@ -63,9 +63,9 @@ export const editQuestionById = async (payload, questionId) => {
   }
 }
 
-export const deleteQuestionById = async (examId,questionId) => {
+export const deleteQuestionById = async (payload) => {
   try {
-    const response = await axiosInstance.delete(`/api/exams/delete-question-in-exam/${questionId}`, examId);
+    const response = await axiosInstance.post(`/api/exams/delete-question-in-exam`, payload);
     return response.data;
   } catch (error) {
     return error.response.data;

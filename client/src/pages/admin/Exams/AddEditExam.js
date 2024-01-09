@@ -72,15 +72,17 @@ const AddEditExam = () => {
     try {
       dispatch(ShowLoading());
       
-      const response = await deleteQuestionById(params.id,questionId);
+      const response = await deleteQuestionById({
+        questionId,
+        examId:params.id
+      });
       dispatch(HideLoading());
       if (response.success) {
         message.success(response.message);
         getExamData();
       } else {
         message.error(response.message);
-        window.location.reload();
-        // console.error(response.message);
+        console.error(response.message);
       }
 
     } catch (error) {

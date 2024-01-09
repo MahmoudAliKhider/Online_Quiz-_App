@@ -141,13 +141,13 @@ router.put("/edit-question-in-exam/:questionId", authMiddleware, async (req, res
     }
 });
 
-router.delete("/delete-question-in-exam/:questionId", authMiddleware, async (req, res) => {
+router.post("/delete-question-in-exam", authMiddleware, async (req, res) => {
     try {
-        await Question.findByIdAndDelete(req.params.questionId);
+        await Question.findByIdAndDelete(req.body.questionId);
 
         // delete question in exam
         const exam = await Exam.findById(req.body.examId);
-        exam.questions = exam.questions.filter((question) => question._id != req.params.questionId);
+        exam.questions = exam.questions.filter((question) => question._id != req.body.questionId);
         
         await exam.save();
         res.send({
