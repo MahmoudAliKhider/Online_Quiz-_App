@@ -26,3 +26,12 @@ export const getExamById = async (examId) => {
     return error.response.data;
   }
 };
+
+export const updateExamById = async ( examId, payload ) => {
+  try {
+    const response = await axiosInstance.put(`/api/exams/edit-exam-by-id/${examId}`, payload);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};

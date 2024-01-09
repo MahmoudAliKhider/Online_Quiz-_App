@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, Row, Col, Select, message, Tabs } from "antd";
 
 import PageTitle from '../../../components/PageTitle';
-import { addExam, getExamById } from '../../../apiCalls/exams';
+import { addExam, getExamById, updateExamById } from '../../../apiCalls/exams';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { HideLoading, ShowLoading } from '../../../redux/loaderSlice';
@@ -16,9 +16,18 @@ const AddEditExam = () => {
   const [examData, setExamData] = useState(null);
 
   const onFinish = async (value) => {
+
     try {
       dispatch(ShowLoading());
-      let response = await addExam(value);
+      let response;
+
+      if (params.id) {
+
+        response = await updateExamById(params.id, value)
+      } else {
+        response = await addExam(value);
+      }
+
       dispatch(HideLoading());
       if (response.success) {
         message.success(response.message);
@@ -32,7 +41,7 @@ const AddEditExam = () => {
     }
   }
 
-  const getExamsData = async () => {
+  const getExamData = async () => {
     try {
       dispatch(ShowLoading());
       const response = await getExamById(
@@ -52,7 +61,7 @@ const AddEditExam = () => {
 
   useEffect(() => {
     if (params.id) {
-      getExamsData()
+      getExamData()
     }
   }, [])
   return (

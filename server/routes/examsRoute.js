@@ -66,10 +66,15 @@ router.get("/get-exam-by-id/:examId", authMiddleware, async (req, res) => {
 
 router.put('/edit-exam-by-id/:examId', authMiddleware, async (req, res) => {
     try {
-        await Exam.findByIdAndUpdate(req.params.examId, req.body);
+      const exam =  await Exam.findByIdAndUpdate(req.params.examId,
+         { $set: req.body },
+          { new: true }
+         );
+
         res.status(200).send({
             message: "Exam edited successfully",
             success: true,
+            data: exam
         });
     } catch (error) {
         res.status(500).send({
