@@ -7,6 +7,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { HideLoading, ShowLoading } from '../../../redux/loaderSlice';
 import TabPane from 'antd/es/tabs/TabPane';
+import AddEditQuestion from './AddEditQuestion';
 
 const AddEditExam = () => {
   const navigate = useNavigate();
@@ -14,6 +15,8 @@ const AddEditExam = () => {
   const params = useParams();
 
   const [examData, setExamData] = useState(null);
+  const [showAddEditQuestionModel, setShowAddEditQuestionModel] = useState(false)
+  const [selectedQuestion, setSelectedQuestion] = React.useState(null);
 
   const onFinish = async (value) => {
 
@@ -64,7 +67,7 @@ const AddEditExam = () => {
       getExamData()
     }
   }, []);
-  
+
   return (
     <div>
       <PageTitle title={params.id ? 'Exam Edit' : "Exam Add"} />
@@ -116,20 +119,36 @@ const AddEditExam = () => {
               </Row>
             </TabPane>
 
-            {params.id && <TabPane tab="Exam Question" key='2'>
-              <h1>Questions</h1>
-            </TabPane>}
+            {params.id &&
+              (<TabPane tab="Questions" key='2'>
+                <div className='flex justify-end'>
+                  <button className='primary-outlined-btn '
+                    type="button"
+                    onClick={() => setShowAddEditQuestionModel(true)}
+                  >Add Questios</button>
+                </div>
+              </TabPane>
+              )}
 
           </Tabs>
-
+           <br />
           <div className='flex justify-end gap-2' >
             <button type="submit" className='primary-outlined-btn'
-            onClick={()=>navigate('/admin/exams')}
+              onClick={() => navigate('/admin/exams')}
             >Cancel</button>
             <button type="submit" className='primary-contained-btn'>Save</button>
           </div>
         </Form>
       }
+
+      {showAddEditQuestionModel && (
+      <AddEditQuestion
+        setShowAddEditQuestionModel={setShowAddEditQuestionModel}
+        showAddEditQuestionModel={showAddEditQuestionModel}
+        examId={params.id}
+        refreshData={getExamData}
+      />
+      )}
     </div>
   )
 }
