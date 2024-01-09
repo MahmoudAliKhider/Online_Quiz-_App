@@ -63,7 +63,8 @@ const AddEditExam = () => {
     if (params.id) {
       getExamData()
     }
-  }, [])
+  }, []);
+  
   return (
     <div>
       <PageTitle title={params.id ? 'Exam Edit' : "Exam Add"} />

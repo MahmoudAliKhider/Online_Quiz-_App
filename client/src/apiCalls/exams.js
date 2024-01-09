@@ -35,3 +35,12 @@ export const updateExamById = async ( examId, payload ) => {
     return error.response.data;
   }
 };
+
+export const removeExamById = async (examId) => {
+  try {
+    const response = await axiosInstance.delete(`/api/exams/delete-exam-by-id/${examId}`);
+    return response.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
