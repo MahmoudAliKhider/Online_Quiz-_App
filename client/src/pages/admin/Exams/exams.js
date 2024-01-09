@@ -73,7 +73,7 @@ const Exams = () => {
             const response = await removeExamById(examId);
             dispatch(HideLoading());
             if (response.success) {
-                setExams(response.data);
+                getExamsData()
             } else {
                 message.error(response.message);
             }

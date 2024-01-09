@@ -11,7 +11,7 @@ const AddEditQuestion = ({
     refreshData,
     examId,
     selectedQuestion,
-    setselectedQuestion
+    setSelectedQuestion
 }) => {
     const dispatch = useDispatch();
 
@@ -39,10 +39,11 @@ const AddEditQuestion = ({
                 message.success(response.message)
                 refreshData();
                 setShowAddEditQuestionModel(false);
-                dispatch(HideLoading());
             } else {
                 message.error(response.message);
             }
+            setSelectedQuestion(null);
+            dispatch(HideLoading());
         } catch (error) {
             dispatch(HideLoading());
             message.error(error.message);
@@ -56,7 +57,7 @@ const AddEditQuestion = ({
             footer={false}
             onCancel={() => {
                 setShowAddEditQuestionModel(false)
-                setselectedQuestion(null)
+                setSelectedQuestion(null)
             }}>
 
             <Form onFinish={onFinish} layout='vertical'

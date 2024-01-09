@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, Row, Col, Select, message, Tabs, Table } from "antd";
 
 import PageTitle from '../../../components/PageTitle';
-import { addExam, getExamById, updateExamById } from '../../../apiCalls/exams';
+import { addExam, deleteQuestionById, getExamById, updateExamById } from '../../../apiCalls/exams';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { HideLoading, ShowLoading } from '../../../redux/loaderSlice';
@@ -68,6 +68,28 @@ const AddEditExam = () => {
     }
   }, []);
 
+  const deleteQuestion = async (questionId) => {
+    try {
+      dispatch(ShowLoading());
+      
+      const response = await deleteQuestionById(params.id,questionId);
+      dispatch(HideLoading());
+      if (response.success) {
+        message.success(response.message);
+        getExamData();
+      } else {
+        message.error(response.message);
+        window.location.reload();
+        // console.error(response.message);
+      }
+
+    } catch (error) {
+      dispatch(HideLoading());
+      message.error(error.message);
+    }
+  }
+
+
   const QuestionOptions = [
     {
       title: "Question",
@@ -98,7 +120,7 @@ const AddEditExam = () => {
             setSelectedQuestion(record)
             setShowAddEditQuestionModel(true)
           }}></i>
-          <i className="ri-delete-bin-line" onClick={() => { }}></i>
+          <i className="ri-delete-bin-line" onClick={() => { deleteQuestion(record._id) }}></i>
         </div>
       )
     }
@@ -175,7 +197,7 @@ const AddEditExam = () => {
 
                 <Table
                   columns={QuestionOptions}
-                  dataSource={examData?.questions}
+                  dataSource={examData?.questions || []}
                 />
               </TabPane>
               )}

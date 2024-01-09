@@ -146,10 +146,9 @@ router.delete("/delete-question-in-exam/:questionId", authMiddleware, async (req
         await Question.findByIdAndDelete(req.params.questionId);
 
         // delete question in exam
-        const exam = await Exam.findById(req.params.questionId);
-        exam.questions = exam.questions.filter((question) => {
-            question._id != req.params.questionId;
-        })
+        const exam = await Exam.findById(req.body.examId);
+        exam.questions = exam.questions.filter((question) => question._id != req.params.questionId);
+        
         await exam.save();
         res.send({
             message: "Question deleted successfully",
