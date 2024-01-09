@@ -2,7 +2,6 @@ const router = require('express').Router();
 
 const authMiddleware = require("../middlewares/authMiddleware.js");
 const Exam = require('../models/examModule.js');
-const Exam = require('../models/examModule.js');
 const Question = require('../models/questionModule.js');
 
 router.post('/add', authMiddleware, async (req, res) => {
@@ -123,7 +122,7 @@ router.post('/add-question-to-exam', authMiddleware, async (req, res) => {
             success: false,
         });
     }
-})
+});
 
 router.put("/edit-question-in-exam/:questionId", authMiddleware, async (req, res) => {
     try {
@@ -140,6 +139,29 @@ router.put("/edit-question-in-exam/:questionId", authMiddleware, async (req, res
         });
 
     }
-})
+});
+
+router.post("/delete-question-in-exam/:questionId", authMiddleware, async (req, res) => {
+    try {
+        await Question.findByIdAndDelete(req.params.questionId);
+
+        // delete question in exam
+        const exam = await Exam.findById(req.params.questionId);
+        exam.questions = exam.questions.filter((question) => {
+            question._id != req.params.questionId;
+        })
+        await exam.save();
+        res.send({
+            message: "Question deleted successfully",
+            success: true,
+        });
+    } catch (error) {
+        res.status(500).send({
+            message: error.message,
+            data: error,
+            success: false,
+        });
+    }
+});
 
 module.exports = router;
