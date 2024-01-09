@@ -16,7 +16,7 @@ const AddEditExam = () => {
 
   const [examData, setExamData] = useState(null);
   const [showAddEditQuestionModel, setShowAddEditQuestionModel] = useState(false)
-  const [selectedQuestion, setSelectedQuestion] = React.useState(null);
+  const [selectedQuestion, setSelectedQuestion] = useState(null);
 
   const onFinish = async (value) => {
 
@@ -74,10 +74,10 @@ const AddEditExam = () => {
       dataIndex: "name"
     },
     {
-      title:"Options",
-      dataIndex:"options",
-      render: (text,record)=>{
-        return Object.keys(record.options).map((key)=>{
+      title: "Options",
+      dataIndex: "options",
+      render: (text, record) => {
+        return Object.keys(record.options).map((key) => {
           return <div>{key} : {record.options[key]}</div>
         })
       }
@@ -94,7 +94,10 @@ const AddEditExam = () => {
       dataIndex: "action",
       render: (text, record) => (
         <div className="flex gap-2">
-          <i className="ri-pencil-line" onClick={() => { }}></i>
+          <i className="ri-pencil-line" onClick={() => {
+            setSelectedQuestion(record)
+            setShowAddEditQuestionModel(true)
+          }}></i>
           <i className="ri-delete-bin-line" onClick={() => { }}></i>
         </div>
       )
@@ -189,6 +192,8 @@ const AddEditExam = () => {
           showAddEditQuestionModel={showAddEditQuestionModel}
           examId={params.id}
           refreshData={getExamData}
+          selectedQuestion={selectedQuestion}
+          setSelectedQuestion={setSelectedQuestion}
         />
       )}
     </div>

@@ -1,7 +1,7 @@
 import React from 'react'
 import { Form, Modal, message } from 'antd';
 
-import { addQuestionToExam } from '../../../apiCalls/exams';
+import { addQuestionToExam, editQuestionById } from '../../../apiCalls/exams';
 import { HideLoading, ShowLoading } from "../../../redux/loaderSlice";
 import { useDispatch } from 'react-redux';
 
@@ -9,7 +9,9 @@ const AddEditQuestion = ({
     showAddEditQuestionModel,
     setShowAddEditQuestionModel,
     refreshData,
-    examId
+    examId,
+    selectedQuestion,
+    setselectedQuestion
 }) => {
     const dispatch = useDispatch();
 
@@ -27,7 +29,12 @@ const AddEditQuestion = ({
                 },
                 exam: examId
             }
-            const response = await addQuestionToExam(requirePayload);
+            let response ;
+            if(selectedQuestion){
+               response = await editQuestionById(requirePayload,selectedQuestion._id)
+            }else{
+               response = await addQuestionToExam(requirePayload)
+            }
             if (response.success) {
                 message.success(response.message)
                 refreshData();
@@ -44,12 +51,28 @@ const AddEditQuestion = ({
     return (
 
         <Modal
-            title="Add Question"
+            title={selectedQuestion ? `Edit Question` : `Add Question`}
             visible={showAddEditQuestionModel}
             footer={false}
-            onCancel={() => setShowAddEditQuestionModel(false)}>
+            onCancel={() => {
+                setShowAddEditQuestionModel(false)
+                setselectedQuestion(null)
+            }}>
 
-            <Form onFinish={onFinish} layout='vertical'>
+            <Form onFinish={onFinish} layout='vertical'
+                initialValues={
+                    {
+                        name: selectedQuestion?.name,
+                        A: selectedQuestion?.options?.A,
+                        B: selectedQuestion?.options?.B,
+                        C: selectedQuestion?.options?.C,
+                        D: selectedQuestion?.options?.D,
+
+                        correctanswer: selectedQuestion?.correctanswer
+
+                    }
+                }
+            >
                 <Form.Item name='name' label='Question'>
                     <input type='text' />
                 </Form.Item>
@@ -77,7 +100,7 @@ const AddEditQuestion = ({
                     </Form.Item>
 
                 </div>
-                
+
                 <div className="flex justify-end mt-2 gap-3">
                     <button
                         className="primary-outlined-btn"
