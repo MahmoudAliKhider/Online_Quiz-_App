@@ -29,10 +29,11 @@ const ProtectRoute = ({ children }) => {
           setMenu(userMenu);
         }
       } else {
-        dispatch(HideLoading());
         message.error(response.message);
       }
     } catch (error) {
+      dispatch(HideLoading());
+      navigate('/login');
       message.error(error.message);
     }
 

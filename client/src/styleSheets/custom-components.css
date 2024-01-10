@@ -6,6 +6,9 @@
 
 .card-lg {
     box-shadow: 0 0 2px rgb(128, 128, 128);
+    border-radius: 6px;
+    color: #0F3460;
+    
 }
 
 .divider {
