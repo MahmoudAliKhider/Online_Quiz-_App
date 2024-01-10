@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { HideLoading, ShowLoading } from '../../../redux/loaderSlice';
 import { getExamById } from '../../../apiCalls/exams';
@@ -11,10 +11,10 @@ const WriteExam = () => {
   const [questions, setQuestions] = useState([]);
   const [selectedQuestionIndex, setSelectedQuestionIndex] = useState(0);
   const [selecteOptions, setSelecteOptions] = useState({});
+  const [result = {}, setResult] = useState({});
 
   const [view, setView] = useState('instructions');
 
-  const navigate = useNavigate();
   const dispatch = useDispatch();
   const params = useParams();
 
@@ -37,11 +37,37 @@ const WriteExam = () => {
     }
   };
 
+  const calculatResult = async () => {
+    let correctAnswers = [];
+    let wrongAnswers = [];
+
+    questions.forEach((question, index) => {
+      if (question.correctanswer === selecteOptions[index]) {
+        correctAnswers.push(question)
+      } else {
+        wrongAnswers.push(question)
+      }
+    })
+
+    let verdict = "Pass";
+    if (correctAnswers.length < examData.passingMarks) {
+      verdict = "Fail";
+    }
+
+    setResult({
+      correctAnswers,
+      wrongAnswers,
+      verdict
+    })
+    setView("result")
+  }
+
   useEffect(() => {
     if (params.id) {
       getExamData()
     }
   }, []);
+
   return (
     examData && (
       <div className='mt-2'>
@@ -83,9 +109,6 @@ const WriteExam = () => {
                         {questions[selectedQuestionIndex].options[option]}
                       </h3>
                     </div>)
-
-
-
                 })}
             </div >
 
@@ -109,10 +132,68 @@ const WriteExam = () => {
                   Next
                 </button>
               }
+
+              {
+                (selectedQuestionIndex === (questions.length - 1)) &&
+                <button className='primary-contained-btn'
+                  onClick={() =>
+                    calculatResult()
+                  }
+                >
+                  Submit
+                </button>
+              }
             </div>
+
           </div>
         )
         }
+
+        {view === "result" && (
+          <div className="flex  items-center mt-2 justify-center result">
+            <div className="flex flex-col gap-2">
+              <h1 className="text-2xl">RESULT</h1>
+              <div className='marks'>
+                <h1 className="text-xl">Total Marks : {examData.totalMarks}</h1>
+                <h1 className="text-xl">
+                  Obtained Marks :{result.correctAnswers.length || 0}
+                </h1>
+                <h1 className="text-xl">
+                  Wrong Answers : {result?.wrongAnswers?.length || 0}
+                </h1>
+                <h1 className="text-xl">
+                  Passing Marks : {examData.passingMarks}
+                </h1>
+                <h1 className="text-xl">VERDICT :{result.verdict}</h1>
+
+              </div>
+
+            </div>
+
+            <div className="lottie-animation">
+              {result.verdict === "Pass" && (
+                <lottie-player
+                  src="https://assets2.lottiefiles.com/packages/lf20_ya4ycrti.json"
+                  background="transparent"
+                  speed="1"
+                  loop
+                  autoplay
+                ></lottie-player>
+              )}
+
+              {result.verdict === "Fail" && (
+                <lottie-player
+                  src="https://assets4.lottiefiles.com/packages/lf20_qp1spzqv.json"
+                  background="transparent"
+                  speed="1"
+                  loop
+                  autoplay
+                ></lottie-player>
+              )}
+            </div>
+          </div>
+        )}
+
       </div>
     )
   )

@@ -63,7 +63,7 @@
 .result {
     box-shadow: rgba(75, 75, 75, 0.638) 0px 0px 2px;
     padding: 30px;
-    color: white !important;
+    color: rgb(53, 51, 51) !important;
     border-radius: 5px;
 }
 
