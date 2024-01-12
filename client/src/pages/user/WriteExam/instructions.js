@@ -1,7 +1,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
-function Instructions({ examData ,setView}) {
+function Instructions({ examData ,setView,startTimer}) {
     const navigate = useNavigate();
     return (
         <div className="flex flex-col items-center gap-5">
@@ -38,7 +38,7 @@ function Instructions({ examData ,setView}) {
                 <button
                     className="primary-contained-btn"
                     onClick={() => {
-                        // startTimer();
+                        startTimer();
                         setView("questions");
                     }}
                 >
