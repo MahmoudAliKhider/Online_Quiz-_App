@@ -187,9 +187,8 @@ const WriteExam = () => {
                 (selectedQuestionIndex === (questions.length - 1)) &&
                 <button className='primary-contained-btn'
                   onClick={() => {
-                    setTimeUp(true)
                     clearInterval(intervalId)
-                    calculatResult()
+                    setTimeUp(true)
                   }
                   }
                 >
