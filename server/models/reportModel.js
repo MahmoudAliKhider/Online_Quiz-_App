@@ -4,7 +4,7 @@ const reportSchema = new mongoose.Schema(
     {
         user: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: "users",
+            ref: "Users",
         },
         exam: {
             type: mongoose.Schema.Types.ObjectId,
