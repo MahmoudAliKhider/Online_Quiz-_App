@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { HideLoading, ShowLoading } from '../../../redux/loaderSlice';
 import { getExamById } from '../../../apiCalls/exams';
 import { message } from 'antd';
 import Instructions from './instructions';
+import { addReport } from '../../../apiCalls/reports';
 
 const WriteExam = () => {
   const [examData, setExamData] = useState(null);
@@ -18,6 +19,7 @@ const WriteExam = () => {
 
   const [view, setView] = useState('instructions');
 
+  const { user } = useSelector((state) => state.users)
   const dispatch = useDispatch();
   const params = useParams();
 
@@ -42,28 +44,46 @@ const WriteExam = () => {
   };
 
   const calculatResult = async () => {
-    let correctAnswers = [];
-    let wrongAnswers = [];
+    try {
+      let correctAnswers = [];
+      let wrongAnswers = [];
 
-    questions.forEach((question, index) => {
-      if (question.correctanswer === selecteOptions[index]) {
-        correctAnswers.push(question)
-      } else {
-        wrongAnswers.push(question)
+      questions.forEach((question, index) => {
+        if (question.correctanswer === selecteOptions[index]) {
+          correctAnswers.push(question)
+        } else {
+          wrongAnswers.push(question)
+        }
+      })
+
+      let verdict = "Pass";
+      if (correctAnswers.length < examData.passingMarks) {
+        verdict = "Fail";
       }
-    })
 
-    let verdict = "Pass";
-    if (correctAnswers.length < examData.passingMarks) {
-      verdict = "Fail";
+      const tempResult = {
+        correctAnswers,
+        wrongAnswers,
+        verdict
+      }
+
+      setResult(tempResult)
+      dispatch(ShowLoading())
+      const response = await addReport({
+        exam: params.id,
+        result: tempResult,
+        user: user._id
+      })
+      dispatch(HideLoading());
+      if (response.success) {
+        setView("result")
+      } else {
+        message.error(response.error)
+      }
+    } catch (error) {
+      dispatch(HideLoading());
+      message.error(error.message);
     }
-
-    setResult({
-      correctAnswers,
-      wrongAnswers,
-      verdict
-    })
-    setView("result")
   }
 
   const startTimer = () => {
