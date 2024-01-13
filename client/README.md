@@ -1,70 +1,123 @@
-# Getting Started with Create React App
+# MERN Stack MasterQuiz App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This repository contains the source code for a Quiz App developed using the MERN (MongoDB, Express.js, React, Node.js) stack. The project is divided into a backend server and a frontend client.
 
-## Available Scripts
+## Backend Server (Node.js)
 
-In the project directory, you can run:
+### Installation
 
-### `npm start`
+1. Clone the repository:
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+    ```bash
+    git clone https://github.com/your-username/quiz-app.git
+    cd quiz-app/server
+    ```
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+2. Install dependencies:
 
-### `npm test`
+    ```bash
+    npm install
+    ```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+3. Configure the environment variables:
 
-### `npm run build`
+    Create a `.env` file in the `server` directory and add the following:
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+    ```env
+    PORT=8000
+    MONGODB_URI=your_mongodb_uri
+    ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+### Usage
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Run the server:
 
-### `npm run eject`
+    ```bash
+    npm start
+    ```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+The server will be running on `http://localhost:8000`.
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### API Endpoints
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+- Users:
+    - Register: `/api/users/register`
+    - Login: `/api/users/login`
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+- Exams:
+    - Add Exam: `/api/exams/add`
+    - Get All Exams: `/api/exams/get-all-exams`
+    - Get Exam by ID: `/api/exams/get-exam-by-id/:examId`
+    - Edit Exam by ID: `/api/exams/edit-exam-by-id/:examId`
+    - Delete Exam by ID: `/api/exams/delete-exam-by-id/:examId`
+    - Add Question to Exam: `/api/exams/add-question-to-exam`
+    - Delete Question in Exam: `/api/exams/delete-question-in-exam`
+    - Edit Question in Exam: `/api/exams/edit-question-in-exam/:questionId`
 
-## Learn More
+- Reports:
+    - Add Report: `/api/reports/add-report`
+    - Get All Reports: `/api/reports/get-all-reports`
+    - Get All Reports by User: `/api/reports/get-all-reports-by-user`
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+## Frontend Client (React)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+### Installation
 
-### Code Splitting
+1. Move to the `client` directory:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+    ```bash
+    cd ../client
+    ```
 
-### Analyzing the Bundle Size
+2. Install dependencies:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+    ```bash
+    npm install
+    ```
 
-### Making a Progressive Web App
+### Usage
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+Run the React app:
 
-### Advanced Configuration
+    ```bash
+    npm start
+    ```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+The app will be accessible at `http://localhost:3000`.
 
-### Deployment
+### Structure
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+- `apiCalls`:
+    - `users.js`
+    - `reports.js`
+    - `exams.js`
 
-### `npm run build` fails to minify
+- `components`:
+    - `protectRoute.js`
+    - `PageTitle.js`
+    - `Loader.js`
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+- `pages`:
+    - Admin:
+        - `AdminReport.js`
+        - `Exams.js`
+    - Common:
+        - `Home.js`
+        - `Login.js`
+        - `Register.js`
+    - User:
+        - `UserReports.js`
+        - `WriteExams.js`
+
+- `redux`:
+    - `userSlice.js`
+    - `store.js`
+    - `loaderSlice.js`
+
+## Contributing
+
+Feel free to contribute to this project by creating issues or submitting pull requests.
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
