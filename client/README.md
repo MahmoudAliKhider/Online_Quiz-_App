@@ -1,4 +1,5 @@
 # MERN Stack MasterQuiz App
+## 
 
 This repository contains the source code for a Quiz App developed using the MERN (MongoDB, Express.js, React, Node.js) stack. The project is divided into a backend server and a frontend client.
 
@@ -122,5 +123,5 @@ Feel free to contribute to this project by creating issues or submitting pull re
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-[![GitHub stars](https://img.shields.io/github/stars/your-username/quiz-app.svg?style=flat&logo=github)](https://github.com/your-username/quiz-app/stargazers)
+[![GitHub stars](https://img.shields.io/github/stars/your-username/quiz-app.svg?style=flat&logo=github)](https://github.com/MahmoudAliKhider/Online_Quiz-_App)
 
