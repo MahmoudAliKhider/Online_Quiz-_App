@@ -121,3 +121,6 @@ Feel free to contribute to this project by creating issues or submitting pull re
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+
+[![GitHub stars](https://img.shields.io/github/stars/your-username/quiz-app.svg?style=flat&logo=github)](https://github.com/your-username/quiz-app/stargazers)
+
