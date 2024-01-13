@@ -13,7 +13,7 @@ Visit the live demo at [masterquiz.onrender.com](https://masterquiz.onrender.com
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/your-username/quiz-app.git
+    git clone https://github.com/MahmoudAliKhider/Online_Quiz-_App
     cd quiz-app/server
     ```
 
