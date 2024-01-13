@@ -26,8 +26,8 @@ const Login = () => {
     }
 
     return (
-        <div className='flex justify-center items-center h-screen w-screen'>
-            <div className='card w-400 p-4'>
+        <div className='flex justify-center items-center h-screen w-screen bg-primary'>
+            <div className='card w-400 p-4 bg-white'>
                 <div className='flex flex-col'>
                     <h1 className='text-3xl'>Login</h1>
                     <div className="divider"></div>

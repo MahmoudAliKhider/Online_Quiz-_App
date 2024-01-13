@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { HideLoading, ShowLoading } from '../../../redux/loaderSlice';
 import { getExamById } from '../../../apiCalls/exams';
@@ -22,6 +22,7 @@ const WriteExam = () => {
   const { user } = useSelector((state) => state.users)
   const dispatch = useDispatch();
   const params = useParams();
+  const navigate = useNavigate();
 
   const getExamData = async () => {
     try {
@@ -218,6 +219,23 @@ const WriteExam = () => {
                 </h1>
                 <h1 className="text-xl">VERDICT :{result.verdict}</h1>
 
+                <div className='flex gap-2 mt-2'>
+                  <button className='primary-outlined-btn'
+                    onClick={() => {
+                      setView("instructions")
+                      setSelectedQuestionIndex(0)
+                      setSelecteOptions([])
+                      setSecondsLeft(examData.duration)
+                    }}
+                  >
+                    Retake Exam
+                  </button>
+                  <button className='primary-contained-btn'
+                    onClick={() => {
+                      setView("review")
+                    }}
+                  >Review Answer</button>
+                </div>
               </div>
 
             </div>
@@ -242,6 +260,55 @@ const WriteExam = () => {
                   autoplay
                 ></lottie-player>
               )}
+            </div>
+          </div>
+        )
+        }
+
+        {view === "review" && (
+          <div className='flex flex-col gap-2 '>
+            {questions.map((question, index) => {
+              const isCorrect = question.correctanswer === selecteOptions[index]
+              return (
+                <div
+                  className={`
+                  flex flex-col gap-1 p-2 ${isCorrect ? "bg-success" : "bg-error"
+                    }
+                `}
+                >
+                  <h1 className='text-xl'>{index + 1}:{question.name}</h1>
+                  <h1 className='text-lg'>
+                    submitted Answer :{selecteOptions[index]} - {question.options[selecteOptions[index]]}
+                  </h1>
+                  <h1 className='text-md'>
+                    Correct Answer : {question.correctanswer} - {question.options[question.correctanswer]}
+                  </h1>
+                </div>
+
+              )
+            })
+
+            }
+            <div className="flex justify-center gap-2">
+              <button
+                className="primary-outlined-btn"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                Close
+              </button>
+              <button
+                className="primary-contained-btn"
+                onClick={() => {
+                  setView("instructions");
+                  setSelectedQuestionIndex(0);
+                  setSelecteOptions({});
+                  setSecondsLeft(examData.duration);
+                }}
+              >
+                Retake Exam
+              </button>
             </div>
           </div>
         )}
